@@ -23,7 +23,7 @@ class phpsecPw {
    *   'algo'      => The hashing algorythm used.
    * )
    * The following injection methods exists:
-   * before: The salt is placed diectly in front of the password, without using any
+   * before: The salt is placed directly infront of the password, without using any
    * seperation characters.
    * after: The salt is placed directly after the password without any seperation
    * characters.
@@ -35,7 +35,7 @@ class phpsecPw {
    *   Returns a json encoded array containing the password hash, salt and
    *   some meta data.
    */
-  public static function hash($password) {
+  public static function pwhash($password) {
     $salt     = phpsecRand::bytes(64);
     $injected = self::inject($password, $salt);
     $hash     = hash(phpsec::HASH_TYPE, $injected);
@@ -50,21 +50,21 @@ class phpsecPw {
 
   /**
    * Validate a user-supplied password against a stored password generated
-   * using the phpsecPw::hash() method.
+   * using the phpsecPw::pwhash() method.
    *
    * @param string $password
    *   The password supplied by the user in the login form.
    *
    * @param string $dbPassword
    *   The json string fetched from the database, in the exact format
-   *   as created by pwHash().
+   *   as created by pwdHash().
    *
    * @return boolean
    *   True on password match, false otherwise.
    */
   public static function check($password, $dbPassword) {
     /**
-     * Unserialize registerd password array and validate it to ensure
+     * Unserialize registered password array and validate it to ensure
      * we got a valid array.
      */
     $data = json_decode($dbPassword, true);
@@ -78,13 +78,15 @@ class phpsecPw {
     if($data !== null && phpsec::arrayCheck($data, $dataStructure)) {
       /**
        * Ok, we are pretty sure that this is a good array. Now inject the salt
-       * into the user supplied password, to see if it matches the registerd
+       * into the user supplied password, to see if it matches the registered
        * data from $dbPassword.
        */
 
-      /* Try to Base64 decode the salt.  base64_decode() will return false
+      /** 
+       * Try to Base64 decode the salt.  base64_decode() will return false
        * if the string passed is not Base64 encoded. This way we can separate
-       * binary salts from the old type of salts. */
+       * binary salts from the old type of salts. 
+       */
       $decodedSalt = base64_decode($data['salt'], true);
       if($decodedSalt !== false) {
         /* The salt was Base64 encoded. Use the decoded version. */
