@@ -20,7 +20,7 @@ class phpsecPw {
    * array(
    *   'hash'      => The hash created from the password and a salt.
    *   'salt'      => The salt that was used along with the password to create the hash.
-   *   'algo'      => The hashing algorythm used.
+   *   'algo'      => The hashing algorthm used.
    * )
    * The following injection methods exists:
    * before: The salt is placed diectly in front of the password, without using any
@@ -78,7 +78,7 @@ class phpsecPw {
     if($data !== null && phpsec::arrayCheck($data, $dataStructure)) {
       /**
        * Ok, we are pretty sure that this is a good array. Now inject the salt
-       * into the user supplied password, to see if it matches the registerd
+       * into the user supplied password, to see if it matches the registered
        * data from $dbPassword.
        */
 
